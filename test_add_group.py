@@ -25,9 +25,10 @@ class TestAddGroup(unittest.TestCase):
         self.wd = webdriver.Chrome(url)
 
     def test_add_group(self):
-        success = True
         wd = self.wd
+        # open page
         wd.get("http://localhost/addressbook/")
+        # login
         wd.find_element_by_name("user").send_keys("admin")
         wd.find_element_by_xpath("//body").click()
         wd.find_element_by_id("LoginForm").click()
@@ -35,20 +36,27 @@ class TestAddGroup(unittest.TestCase):
         wd.find_element_by_xpath("//body").click()
         wd.find_element_by_id("LoginForm").click()
         wd.find_element_by_xpath("//input[@value='Login']").click()
+        # Open group page
         wd.find_element_by_link_text("groups").click()
+        # Create new group
         wd.find_element_by_name("new").click()
+        # Fill group name
         wd.find_element_by_name("group_name").click()
         wd.find_element_by_name("group_name").clear()
         wd.find_element_by_name("group_name").send_keys("group")
+        # Fill group params
         wd.find_element_by_name("group_header").click()
         wd.find_element_by_name("group_header").clear()
         wd.find_element_by_name("group_header").send_keys("grouplogo")
+        #  Fill group comment
         wd.find_element_by_name("group_footer").click()
         wd.find_element_by_name("group_footer").clear()
         wd.find_element_by_name("group_footer").send_keys("comment")
-        wd.find_element_by_xpath("//form[@action='/addressbook/group.php']").click()
+        # Submit
         wd.find_element_by_name("submit").click()
+        # Groups page
         wd.find_element_by_link_text("group page").click()
+        # logout
         wd.find_element_by_link_text("Logout").click()
     
     def is_element_present(self, how, what):

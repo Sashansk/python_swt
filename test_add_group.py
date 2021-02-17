@@ -1,13 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from selenium import webdriver
-from selenium.webdriver.firefox.webdriver import WebDriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.support.ui import Select
 from selenium.common.exceptions import NoSuchElementException
-from selenium.common.exceptions import NoAlertPresentException
-import unittest, time, re
+import unittest, time
 from selenium import webdriver
 
 def is_alert_present(wd):
@@ -28,12 +22,13 @@ class TestAddGroup(unittest.TestCase):
     def test_add_group(self):
         wd = self.wd
         self.open_homepage(wd)
-        self.login(wd)
+        self.login(wd, uname="admin", passwd="secret")
         self.open_group_page(wd)
         self.create_new_group(wd)
-        self.fill_group_content(wd)
+        self.fill_group_content(wd, gr_name="group10", gr_params="grouplogo", gr_comment="comment")
         self.submit_group(wd)
         self.open_group_page(wd)
+        time.sleep(2)
         self.logout_addressbook(wd)
 
     #Metods list
@@ -43,19 +38,19 @@ class TestAddGroup(unittest.TestCase):
     def submit_group(self, wd):
         wd.find_element_by_name("submit").click()
 
-    def fill_group_content(self, wd):
+    def fill_group_content(self, wd, gr_name, gr_params, gr_comment):
         # Fill group name
         wd.find_element_by_name("group_name").click()
         wd.find_element_by_name("group_name").clear()
-        wd.find_element_by_name("group_name").send_keys("group")
+        wd.find_element_by_name("group_name").send_keys(gr_name)
         # Fill group params
         wd.find_element_by_name("group_header").click()
         wd.find_element_by_name("group_header").clear()
-        wd.find_element_by_name("group_header").send_keys("grouplogo")
+        wd.find_element_by_name("group_header").send_keys(gr_params)
         #  Fill group comment
         wd.find_element_by_name("group_footer").click()
         wd.find_element_by_name("group_footer").clear()
-        wd.find_element_by_name("group_footer").send_keys("comment")
+        wd.find_element_by_name("group_footer").send_keys(gr_comment)
 
     def create_new_group(self, wd):
         wd.find_element_by_name("new").click()
@@ -63,11 +58,11 @@ class TestAddGroup(unittest.TestCase):
     def open_group_page(self, wd):
         wd.find_element_by_link_text("groups").click()
 
-    def login(self, wd):
-        wd.find_element_by_name("user").send_keys("admin")
+    def login(self, wd, uname, passwd):
+        wd.find_element_by_name("user").send_keys(uname)
         wd.find_element_by_xpath("//body").click()
         wd.find_element_by_id("LoginForm").click()
-        wd.find_element_by_name("pass").send_keys("secret")
+        wd.find_element_by_name("pass").send_keys(passwd)
         wd.find_element_by_xpath("//body").click()
         wd.find_element_by_id("LoginForm").click()
         wd.find_element_by_xpath("//input[@value='Login']").click()

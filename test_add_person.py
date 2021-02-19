@@ -10,19 +10,32 @@ class TestAddPerson(unittest.TestCase):
         url = "C:\\Users\\User\\Study\\Soft\\chromedriver.exe"
         self.wd = webdriver.Chrome(url)
 
+# tests
     def test_add_person(self):
         wd = self.wd
+        self.login(wd)
+        self.open_add_person_form(wd)
+        self.add_person_content(wd)
+        time.sleep(2)
+        self.logout(wd)
+
+# methods
+    def login(self, wd, uname="admin", password="secret"):
         wd.get("http://localhost/addressbook/")
         wd.find_element_by_name("user").clear()
-        wd.find_element_by_name("user").send_keys("admin")
+        wd.find_element_by_name("user").send_keys(uname)
         wd.find_element_by_name("pass").clear()
-        wd.find_element_by_name("pass").send_keys("secret")
+        wd.find_element_by_name("pass").send_keys(password)
         wd.find_element_by_xpath("//body").click()
         wd.find_element_by_xpath("//form[@id='LoginForm']/label").click()
         wd.find_element_by_xpath("//body").click()
         wd.find_element_by_xpath("//form[@id='LoginForm']/label[2]").click()
         wd.find_element_by_xpath("//input[@value='Login']").click()
+
+    def open_add_person_form(self, wd):
         wd.find_element_by_link_text("add new").click()
+
+    def add_person_content(self, wd):
         wd.find_element_by_name("firstname").click()
         wd.find_element_by_name("firstname").clear()
         wd.find_element_by_name("firstname").send_keys("f_name2")
@@ -103,12 +116,9 @@ class TestAddPerson(unittest.TestCase):
         wd.find_element_by_name("notes").send_keys("note")
         wd.find_element_by_xpath("(//input[@name='submit'])[2]").click()
         wd.find_element_by_link_text("home page").click()
-        time.sleep(2)
+
+    def logout(self, wd):
         wd.find_element_by_link_text("Logout").click()
-        wd.find_element_by_name("user").clear()
-        wd.find_element_by_name("user").send_keys("admin")
-        wd.find_element_by_name("pass").clear()
-        wd.find_element_by_name("pass").send_keys("secret")
 
     def is_element_present(self, how, what):
         try:
